@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Property;
+use App\Entity\PropertySearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Property|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +20,67 @@ class PropertyRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Property::class);
+    }
+
+    /**
+     * @param PropertySearch $search
+     * @return Query
+     */
+    public function findAllVisibleQuery(PropertySearch $search): Query
+    {
+        $query =  $this->findVisibleQuery();
+        if ($search->getMaxPrice()) {
+            $query = $query
+                ->andWhere('p.price <= :maxprice')
+                ->setParameter('maxprice', $search->getMaxPrice());
+        }
+        if ($search->getMinSurface()) {
+            $query = $query
+                ->andWhere('p.surface >= :minsurface')
+                ->setParameter('minsurface', $search->getMinSurface());
+        }
+
+        if ($search->getOptions()->count() > 0) {
+            $k = 0;
+            foreach ($search->getOptions() as $option) {
+                $k++;
+                $query = $query
+                    ->andWhere(":option$k MEMBER OF p.options")
+                    ->setParameter("option$k", $option);
+            }
+        }
+
+        if ($search->getLat() && $search->getLng() && $search->getDistance()) {
+            $query = $query
+                ->andWhere('(6353 * 2 * ASIN(SQRT( POWER(SIN((p.lat - :lat) * pi()/180 / 2), 2) + COS(p.lat * pi()/180) * COS(:lat * pi()/180) * POWER(SIN((p.lng - :lng) * pi()/180 / 2), 2 ) ))) <= :distance')
+                ->setParameter('lng', $search->getLng())
+                ->setParameter('lat', $search->getLat())
+                ->setParameter('distance', $search->getDistance());
+        }
+        return $query->getQuery();
+    }
+
+    /**
+     * @return Property[]
+     */
+    public function findLatest(): array
+    {
+        return $this->findVisibleQuery()
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
+        ;
+    }
+
+
+    private function findVisibleQuery (): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            // /**
+            // ->select('p', 'pics')
+            // ->leftJoin('p.picture', 'pics')
+            //  * **/
+            ->where('p.sold = false');
     }
 
     // /**

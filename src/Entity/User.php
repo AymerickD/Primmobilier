@@ -145,4 +145,22 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password
+        ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
 }

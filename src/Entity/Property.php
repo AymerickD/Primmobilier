@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Property
 {
+
+    const HEAT = [
+        0 => 'Electrique',
+        1 => 'Gaz'
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -96,6 +104,22 @@ class Property
      * @ORM\Column(type="float")
      */
     private $lng;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="property")
+     */
+    private $pictures;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Option::class, mappedBy="properties")
+     */
+    private $options;
+
+    public function __construct()
+    {
+        $this->pictures = new ArrayCollection();
+        $this->options = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -290,6 +314,63 @@ class Property
     public function setLng(float $lng): self
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getProperty() === $this) {
+                $picture->setProperty(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Option[]
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): self
+    {
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+            $option->addProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): self
+    {
+        if ($this->options->removeElement($option)) {
+            $option->removeProperty($this);
+        }
 
         return $this;
     }
