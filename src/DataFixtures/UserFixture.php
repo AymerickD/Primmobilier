@@ -31,9 +31,7 @@ class UserFixture extends Fixture
             ))
             ->setRoles(["ROLE_ADMIN"])
         ;
-        // $product = new Product();
-        // $manager->persist($product);
-
+        $manager->persist($admin);
         $manager->flush();
     }
 }

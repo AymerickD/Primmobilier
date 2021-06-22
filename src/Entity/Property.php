@@ -6,6 +6,9 @@ use App\Repository\PropertyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
+use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
@@ -81,9 +84,9 @@ class Property
     private $postal_code;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $sold;
+    private $sold  = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -96,19 +99,26 @@ class Property
     private $updated_at;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", scale=4, precision=6)
      */
     private $lat;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", scale=4, precision=7)
      */
     private $lng;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="property")
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="property", orphanRemoval=true, cascade={"persist"})
      */
     private $pictures;
+
+    /**
+     * @Assert\All({
+     *      @Assert\Image(mimeTypes="image/jpeg")
+     * })
+     */
+    private $picturesFiles;
 
     /**
      * @ORM\ManyToMany(targetEntity=Option::class, mappedBy="properties")
@@ -117,6 +127,8 @@ class Property
 
     public function __construct()
     {
+        $this->created_at = new DateTime();
+        $this->updated_at = new DateTime();
         $this->pictures = new ArrayCollection();
         $this->options = new ArrayCollection();
     }
@@ -136,6 +148,11 @@ class Property
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return (new Slugify())->slugify($this->title);
     }
 
     public function getDescription(): ?string
@@ -203,6 +220,11 @@ class Property
         return $this->price;
     }
 
+    public function getFormatedPrice(): string
+    {
+        return number_format($this->price, 0, '', ' ');
+    }
+
     public function setPrice(int $price): self
     {
         $this->price = $price;
@@ -213,6 +235,11 @@ class Property
     public function getHeat(): ?int
     {
         return $this->heat;
+    }
+
+    public function getHeatType(): string
+    {
+        return self::HEAT[$this->heat];
     }
 
     public function setHeat(int $heat): self
@@ -326,6 +353,14 @@ class Property
         return $this->pictures;
     }
 
+    public function getPicture(): ?Picture
+    {
+        if($this->pictures->isEmpty()) {
+            return null;
+        }
+        return $this->pictures->first();
+    }
+
     public function addPicture(Picture $picture): self
     {
         if (!$this->pictures->contains($picture)) {
@@ -345,6 +380,29 @@ class Property
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPicturesFiles()
+    {
+        return $this->picturesFiles;
+    }
+
+    /**
+     * @param mixed $picturesFiles
+     * @return Property
+     */
+    public function setPicturesFiles($picturesFiles): self
+    {
+        foreach ($picturesFiles as $picturesFile) {
+            $picture = new Picture();
+            $picture->setImageFile($picturesFile);
+            $this->addPicture($picture);
+        }
+        $this->picturesFiles = $picturesFiles;
         return $this;
     }
 
@@ -374,4 +432,6 @@ class Property
 
         return $this;
     }
+
+    
 }
