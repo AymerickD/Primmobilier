@@ -20,15 +20,31 @@
 
         <div class="row">
             <div class="col-md-8">
-                <div data-slider>
-                    {% if property.pictures is empty %}
-                        <img src="{{ '/images/empty.jpg'| imagine_filter('medium') }}" alt="" class="card-img-top" style="width: 100%; height: auto">
-                    {% else %}
-                        {% for picture in property.pictures %}
-                            <img src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('medium') }}" alt="" class="card-img-top" style="width: 100%; height: auto">
-                        {% endfor %}
-                    {%  endif %}
+
+
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% if property.pictures is empty %}
+                            <img src="{{ '/images/empty.jpg'| imagine_filter('medium') }}" alt="" class="card-img-top" style="width: 100%; height: auto">
+                        {% else %}
+                            {% for picture in property.pictures %}
+                                <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                                    <img src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('medium') }}" alt="" class="d-block w-100" style="width: 100%; height: auto">
+                                </div>
+                            {% endfor %}
+                        {%  endif %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
+
+
             </div>
             <div class="col-md-4">
                 <h1>{{ property.title }}</h1>

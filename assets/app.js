@@ -13,8 +13,6 @@ require ('bootstrap')
 // start the Stimulus application
 import './bootstrap';
 
-
-import 'select2'
 import Places from 'places.js'
 import Map from './modules/map.js'
 import 'slick-carousel'
@@ -55,8 +53,10 @@ var $jq = jQuery.noConflict();
 
 
 $('[data-slider]').slick()
+var captcha_button = document.getElementById('contact_captcha')
+captcha_button.style.display = null;
 
-$('select').select2();
+
 let $conctactButton = $('#contactButton');
 $conctactButton.click(e => {
     e.preventDefault();
