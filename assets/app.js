@@ -19,7 +19,6 @@ import 'slick-carousel'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import $ from 'jquery'
-window.$ = window.jQuery = $;
 
 Map.init()
 
@@ -54,7 +53,15 @@ var $jq = jQuery.noConflict();
 
 $('[data-slider]').slick()
 var captcha_button = document.getElementById('contact_captcha')
-captcha_button.style.display = null;
+
+if (captcha_button !== null) {
+    captcha_button.style.display = null;
+    captcha_button.onclick = function () {
+        grecaptcha.execute()
+    }
+    
+}
+
 
 
 let $conctactButton = $('#contactButton');
@@ -86,6 +93,21 @@ document.querySelectorAll('[data-delete]').forEach( a => {
             .catch(e => alert(e))
     })
 })
+
+var recaptchaCallback = function(token) {
+    var elem = document.getElementById('contact_captcha');
+    while (elem.parentElement !== null) {
+        if (elem.tagName === 'FORM') {
+            elem.submit();
+            break;
+        }
+        elem = elem.parentElement;
+    }
+    document.getElementById("demo-form").submit();
+}
+
+window.recaptchaCallback = recaptchaCallback
+
 
 console.log('WebpackEncore ok !')
 

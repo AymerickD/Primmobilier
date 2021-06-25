@@ -1,10 +1,9 @@
-{% cache 'property_' ~ property.id ~ '_' ~ property.updatedAt.timestamp %}
+
 <div class="card mb-4">
     {% if property.picture %}
-        {% dump('mdr') %}
-        <img src="{{ vich_uploader_asset(property.picture, 'imageFile') | imagine_filter('thumb') }}" alt="" class="card-img-top" style="width: 100%; height: auto">
+        <img src="{{ vich_uploader_asset(property.picture, 'imageFile') }}" alt="" class="card-img-top">
     {% else %}
-        <img src="{{ '/images/empty.jpg' | imagine_filter('thumb') }}" alt="" class="card-img-top" style="width: 100%; height: auto">
+        <img src="{{ '/images/empty.jpg' }}" alt="" class="card-img-top">
     {% endif %}
     <div class="card-body">
         <h5 class="card-title">
@@ -19,4 +18,3 @@
         </div>
     </div>
 </div>
-{% endcache %}

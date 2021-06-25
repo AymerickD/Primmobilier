@@ -45,7 +45,7 @@ class PropertySearchType extends AbstractType
                 'required' => false,
                 'choices' => [
                     '10 km' => 10,
-                    '1000 km' => 1000
+                    '100 km' => 100
                 ]
             ])
             ->add('address', null, [

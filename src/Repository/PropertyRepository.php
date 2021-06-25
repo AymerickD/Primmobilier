@@ -83,6 +83,13 @@ class PropertyRepository extends ServiceEntityRepository
             ->where('p.sold = false');
     }
 
+    public function findAllGetQuery() 
+    {
+        return $this->createQueryBuilder('p')
+            ->getQuery();
+    }
+
+
     // /**
     //  * @return Property[] Returns an array of Property objects
     //  */

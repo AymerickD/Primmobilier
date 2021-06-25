@@ -11,11 +11,16 @@
 <div class="container">
     <h2>Les derniers bien</h2>
     <div class="row flex">
-        {% for property in properties %}
-            <div class="col-3">
+        {% for property in pagination %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
                 {% include "property/_property.html.twig" %}
             </div>
         {% endfor %}
     </div>
+
+    <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
 </div>
 {% endblock %}

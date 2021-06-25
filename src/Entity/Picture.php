@@ -24,7 +24,7 @@ class Picture
     /**
      * @var File|null
      * @Assert\Image(
-     *     mimeTypes="image/jpeg"
+     *     mimeTypes="image/jpeg, image/png"
      * )
      * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
      */
@@ -37,6 +37,7 @@ class Picture
 
     /**
      * @ORM\ManyToOne(targetEntity=Property::class, inversedBy="pictures")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $property;
 
