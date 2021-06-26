@@ -32,3 +32,5 @@ url de connexion: /login
 username: admin
 paswword: admin
 ```
+
+### Utilisation de maildev pour catch les envois de mail
