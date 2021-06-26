@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminOptionController extends AbstractController
 {
     /**
-     * @Route("/admin/option", name="admin.option.index", methods={"GET"})
+     * @Route("/", name="admin.option.index", methods={"GET"})
      */
     public function index(OptionRepository $optionRepository): Response
     {
@@ -26,7 +26,7 @@ class AdminOptionController extends AbstractController
     }
 
     /**
-     * @Route("/admin/option/new", name="admin.option.new", methods={"GET","POST"})
+     * @Route("/new", name="admin.option.new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -50,7 +50,7 @@ class AdminOptionController extends AbstractController
 
 
     /**
-     * @Route("/admin/option/edit/{id}", name="admin.option.edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="admin.option.edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Option $option): Response
     {
@@ -70,7 +70,7 @@ class AdminOptionController extends AbstractController
     }
 
     /**
-     * @Route("/admin/option/{id}", name="admin.option.delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin.option.delete", methods={"DELETE"})
      */
     public function delete(Request $request, Option $option): Response
     {

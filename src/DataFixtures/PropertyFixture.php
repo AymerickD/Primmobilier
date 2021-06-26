@@ -4,11 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Property;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectManager as PersistenceObjectManager;
 use Faker\Factory;
 
-class PropertyFixture extends Fixture
+class PropertyFixture extends Fixture implements FixtureGroupInterface
 {
     public function load(PersistenceObjectManager $manager)
     {
@@ -33,5 +34,10 @@ class PropertyFixture extends Fixture
                 $manager->persist($property);
         }
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['property'];
     }
 }

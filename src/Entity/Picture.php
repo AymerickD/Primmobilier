@@ -23,9 +23,6 @@ class Picture
 
     /**
      * @var File|null
-     * @Assert\Image(
-     *     mimeTypes="image/jpeg, image/png"
-     * )
      * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
      */
     private $imageFile;

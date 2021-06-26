@@ -53,7 +53,7 @@ class AdminPropertyController extends AbstractController {
      */
     public function new(Request $request) 
     {
-        $property = new Property;
+        $property = new Property();
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
 
