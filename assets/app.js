@@ -63,6 +63,8 @@ if (captcha_button !== null) {
 }
 
 
+$('.select2').removeAttr('style');
+
 
 let $conctactButton = $('#contactButton');
 $conctactButton.click(e => {

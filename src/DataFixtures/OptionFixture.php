@@ -10,6 +10,14 @@ class OptionFixture extends Fixture {
 
     public function load(ObjectManager $manager)
     {
+        $appartement = new Option();
+        $appartement->setName('Appartement');
+        $manager->persist($appartement);
+
+        $maison = new Option();
+        $maison->setName('Maison');
+        $manager->persist($maison);
+
         $ascenseur = new Option();
         $ascenseur->setName('Ascenseur');
         $manager->persist($ascenseur);

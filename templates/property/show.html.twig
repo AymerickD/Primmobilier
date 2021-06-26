@@ -3,6 +3,14 @@
 {% block title property.title %}
 
 {% block body %}
+<div class="header_house">
+    <a href="{{ path('property.index') }}">
+        <img src="{{ '/images/PRIMMOBILIER.svg' }}" alt="" id="logo_primmobilier">
+    </a>
+    <svg id="logo_svg" width="100%" height="100%" viewBox="0 0 1778 223" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1775 209.025H1606.14V95.2874L1513.17 3L1420.2 95.2874V209.025L3.00006 220" stroke="#ff6600" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+</div>
 <div class="jumbotron">
     <div class="container">
 
@@ -19,7 +27,7 @@
         {% endif %}
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-12 col-xl-8">
 
 
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -46,8 +54,8 @@
 
 
             </div>
-            <div class="col-md-4">
-                <h1>{{ property.title }}</h1>
+            <div class="col-xl-4 col-lg-12">
+                <h1>{{ property.title | upper }}</h1>
                 <h2>{{ property.rooms }} pièces - {{ property.surface }} m²</h2>
                 <div class="text-primary" style="font-size: 4rem; font-weight: bold">{{ property.formatedPrice }} €</div>
                 <a href="#" class="btn btn-primary" id="contactButton"{% if form.vars.submitted %} style="display: none"{% endif %}>Contacter l'agence</a>
@@ -111,6 +119,8 @@
             </ul>
         </div>
     </div>
+
+    <h2>Localisation</h2>
     <div id="map" style="width: 100%; height: 400px; margin-bottom: 300px;" data-lat="{{ property.lat }}" data-lng="{{ property.lng }}"></div>
 </div>
 {% endblock %}

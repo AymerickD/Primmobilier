@@ -3,30 +3,35 @@
 {% block title 'Voir les biens' %}
 
 {% block body %}
-    <div class="jumbotron">
-        <div class="container">
+    <style>
+        #research_block {
+            background-image: url("{{ '/images/house_vector.svg' }}");
+        }
+    </style>
+    <div class="jumbotron" id="research_block">
+
+        <img src="{{ '/images/PRIMMOBILIER.svg' }}" alt="" id="logo_primmobilier">
+        <div class="container w-50">
             {{ form_start(form) }}
             <div class="form-row align-items-end">
-                <div class="col">
+                <div class="col-md-4">
                     {{ form_row(form.minSurface) }}
                 </div>
-                <div class="col">
+                <div class="col-md-4 col-sm-6">
                     {{ form_row(form.maxPrice) }}
                 </div>
-                <div class="col">
+                <div class="col-md-4 col-sm-6">
                     {{ form_row(form.options) }}
                 </div>
-                <div class="col">
-                    <div class="col">
-                        {{ form_row(form.address, {id: 'search_address'}) }}
-                    </div>
+                <div class="col-md-6 col-sm-6">
+                    {{ form_row(form.address, {id: 'search_address'}) }}
                 </div>
-                <div class="col">
+                <div class="col-md-6 col-sm-6">
                     {{ form_row(form.distance) }}
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <button class="btn btn-primary">Rechercher</button>
+                        <button class="btn btn-primary btn-lg btn-block">Rechercher</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +42,7 @@
     <h1>Voir tous nos biens</h1>
     <div class="row">
         {% for property in properties %}
-           <div class="col-md-4">
+           <div class="col-md-6 col-lg-4">
                 {% include "property/_property.html.twig" %}
            </div>
         {% endfor %}
@@ -47,4 +52,6 @@
         {{ knp_pagination_render(properties) }}
     </div>
 </div>
+
+
 {% endblock %}
