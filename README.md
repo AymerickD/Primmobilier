@@ -1,5 +1,5 @@
 # Primmobilier
-Projet de soutenance
+Projet de soutenance Aymerick Demay
 
 
 ## Installation
@@ -23,3 +23,12 @@ DATABASE_URL="mysql://root:root@127.0.0.1:3306/agence-immo_db?serverVersion=mari
 user: root
 password: root
 db_name: agence-immo_db
+```
+
+### Log BackOffice
+
+```bash
+url de connexion: /login
+username: admin
+paswword: admin
+```
